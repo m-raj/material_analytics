@@ -1,0 +1,16 @@
+Abaqus JOB result
+Abaqus 6.12-3
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 5 tokens.
+<281 out of 355 licenses remain available>.
+Begin Analysis Input File Processor
+Mon 27 Jul 2020 07:55:20 PM IST
+Run pre.exe
+Mon 27 Jul 2020 07:55:22 PM IST
+End Analysis Input File Processor
+Begin Abaqus/Standard Analysis
+Mon 27 Jul 2020 07:55:22 PM IST
+Run standard.exe
+Mon 27 Jul 2020 10:19:46 PM IST
+End Abaqus/Standard Analysis
+Abaqus JOB result COMPLETED
