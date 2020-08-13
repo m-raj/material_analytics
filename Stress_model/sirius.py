@@ -22,7 +22,7 @@ variance = np.load('../../stress_variance.npy')[2]
 
 U_MAX = 0.05
 BATCH_SIZE = 200
-EPOCHS = 500
+EPOCHS = 200
 NUM_WORKERS = 10
 NEIGHBORS = 4
 LOCAL_LEN = 2*NEIGHBORS + 1
@@ -138,8 +138,6 @@ x = layers.Conv2D(12, (3, 3),
                   activation=keras.activations.relu,
                   name='conv2')(x)
 x = layers.Flatten(name='flatten')(x)
-x = layers.Dense(50, activation=keras.activations.tanh,
-                 name='dense1')(x)
 output = layers.Dense(1, name='output')(x)
 model = Sirius(inputs=fixed_input, outputs=output)
 
@@ -161,7 +159,14 @@ model.compile(loss=losses.MeanSquaredError(),
 
 callbacks = [keras.callbacks.EarlyStopping(monitor='val_loss',
                                            min_delta=0.0001,
-                                           patience=10)]
+                                           patience=10),
+             keras.callbacks.ReduceLROnPlateau(moniter="val_loss",
+                                               factor=0.5,
+                                               patience=10,
+                                               min_delta=0.0001,
+                                               cooldown=50,
+                                               verbose=1,
+                                               min_lr=5E-5)]
 
 tic = time.process_time()
 logs = model.fit(train_dataset,
