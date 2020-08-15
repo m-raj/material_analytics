@@ -138,6 +138,7 @@ x = layers.Conv2D(12, (3, 3),
                   activation=keras.activations.relu,
                   name='conv2')(x)
 x = layers.Flatten(name='flatten')(x)
+x = layers.Dense(50, name='dense1', activation=keras.activations.tanh)(x)
 output = layers.Dense(1, name='output')(x)
 model = Sirius(inputs=fixed_input, outputs=output)
 
@@ -154,17 +155,13 @@ test_dataset = Dataset(frame_description,
                        batch_size=BATCH_SIZE)
 
 model.compile(loss=losses.MeanSquaredError(),
-              optimizer=optimizers.Adam(learning_rate=1E-3),
-              metrics=[tf.keras.metrics.MeanAbsoluteError()])
+              optimizer=optimizers.Adam(learning_rate=1E-3))
 
-callbacks = [keras.callbacks.EarlyStopping(monitor='val_loss',
-                                           min_delta=0.0001,
-                                           patience=10),
-             keras.callbacks.ReduceLROnPlateau(moniter="val_loss",
-                                               factor=0.5,
-                                               patience=10,
-                                               min_delta=0.0001,
-                                               cooldown=50,
+callbacks = [keras.callbacks.ReduceLROnPlateau(moniter="val_loss",
+                                               factor=0.8,
+                                               patience=5,
+                                               min_delta=0.001,
+                                               cooldown=10,
                                                verbose=1,
                                                min_lr=5E-5)]
 
