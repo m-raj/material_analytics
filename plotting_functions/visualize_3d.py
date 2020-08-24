@@ -6,7 +6,7 @@ def visualize(target, N=31):
     # Note that the order is reversed because the input is in Fortran type format
     # target should be one-dimensional vector with N^3 elements in Fortran order
     Z, Y, X = np.meshgrid(np.arange(N), np.arange(N), np.arange(N))
-    fig = go.Figure(data=go.Volumne(
+    fig = go.Figure(data=go.Volume(
                     x=X.flatten(),
                     y=Y.flatten(),
                     z=Z.flatten(),
