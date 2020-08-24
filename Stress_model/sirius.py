@@ -28,7 +28,7 @@ NEIGHBORS = 4
 LOCAL_LEN = 2*NEIGHBORS + 1
 
 # Train test split of the element ids
-train_set, test_set = train_test_split(phase_dist.index.values, test_size=0.25)
+train_set, test_set = train_test_split(phase_dist.index.values, test_size=0.1)
 
 tf.keras.backend.set_floatx('float64')
 config = tf.compat.v1.ConfigProto(inter_op_parallelism_threads=12,
@@ -137,7 +137,9 @@ x = layers.Conv2D(12, (3, 3),
 x = layers.Conv2D(12, (3, 3),
                   activation=keras.activations.relu,
                   name='conv2')(x)
+x = layers.MaxPooling2D((2,2), name='Pooling')(x)
 x = layers.Flatten(name='flatten')(x)
+x = layers.Dropout(rate=0.2, name='dense_dropout')(x)
 x = layers.Dense(50, name='dense1', activation=keras.activations.tanh)(x)
 output = layers.Dense(1, name='output')(x)
 model = Sirius(inputs=fixed_input, outputs=output)
@@ -164,7 +166,6 @@ callbacks = [keras.callbacks.ReduceLROnPlateau(moniter="val_loss",
                                                cooldown=10,
                                                verbose=1,
                                                min_lr=5E-5)]
-
 tic = time.process_time()
 logs = model.fit(train_dataset,
                  validation_data=test_dataset,
